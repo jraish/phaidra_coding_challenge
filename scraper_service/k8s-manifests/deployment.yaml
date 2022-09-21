@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scraper-service-app-web
+  namespace: scraper-service-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: scraper-service-app
+      role: web
+  template:
+    metadata:
+      labels:
+        app: scraper-service-app
+        role: web
+    spec:
+      securityContext:
+        runAsGroup: 1000
+        runAsUser: 1000
+      containers:
+        - name: scraper-service-app-web
+          image: scraper-service-app:init
+          imagePullPolicy: IfNotPresent
+          args:
+            - '--bind'
+            - '0.0.0.0'
+            - 'app:app'
+          ports:
+            - name: gunicorn
+              containerPort: 8000
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 256Mi
+              cpu: 200m
+          readinessProbe:
+            initialDelaySeconds: 20
+            httpGet:
+              port: gunicorn
+              path: /
+          livenessProbe:
+            initialDelaySeconds: 10
+            exec:
+              command:
+                - /bin/sh
+                - -c 
+                - "pidof -x gunicorn"
