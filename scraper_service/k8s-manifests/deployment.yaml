@@ -21,6 +21,7 @@ spec:
       containers:
         - name: scraper-service-app-web
           image: scraper-service-app:init
+          imagePullPolicy: Never
           args:
             - '--bind'
             - '0.0.0.0'
@@ -39,11 +40,9 @@ spec:
             initialDelaySeconds: 10
             httpGet:
               port: gunicorn
-              path: /
+              path: /ready
           livenessProbe:
             initialDelaySeconds: 10
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - 'pidof -x gunicorn'
+            httpGet:
+              port: gunicorn
+              path: /health

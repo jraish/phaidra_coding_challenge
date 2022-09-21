@@ -13,9 +13,13 @@ def make_external_call():
         'status_code': r.status_code
     }
 
-@app.route('/')
-def readiness_probe():
-    pass
+@app.route('/health')
+def health():
+    return '', 200
+
+@app.route('/ready')
+def ready():
+    return '', 200
  
 if __name__ == '__main__':
     app.run()
