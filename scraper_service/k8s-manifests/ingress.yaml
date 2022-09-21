@@ -5,7 +5,7 @@ metadata:
   namespace: scraper-service-app
 spec:
   rules:
-    - host: scraper-service.com
+    - host: scraper-service.demo.com
       http:
         paths:
           - path: /
@@ -14,4 +14,4 @@ spec:
               service:
                 name: scraper-service-app-web
                 port: 
-                  number: 8000
+                  name: http

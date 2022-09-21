@@ -21,7 +21,6 @@ spec:
       containers:
         - name: scraper-service-app-web
           image: scraper-service-app:init
-          imagePullPolicy: IfNotPresent
           args:
             - '--bind'
             - '0.0.0.0'
@@ -37,7 +36,7 @@ spec:
               memory: 256Mi
               cpu: 200m
           readinessProbe:
-            initialDelaySeconds: 20
+            initialDelaySeconds: 10
             httpGet:
               port: gunicorn
               path: /
@@ -46,5 +45,5 @@ spec:
             exec:
               command:
                 - /bin/sh
-                - -c 
-                - "pidof -x gunicorn"
+                - -c
+                - 'pidof -x gunicorn'
