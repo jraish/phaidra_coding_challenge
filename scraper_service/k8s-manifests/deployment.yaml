@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: scraper-service-app-web
+  name: scraper-service-app
   namespace: scraper-service-app
 spec:
   replicas: 2
@@ -9,6 +9,11 @@ spec:
     matchLabels:
       app: scraper-service-app
       role: web
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -19,30 +24,30 @@ spec:
         runAsGroup: 1000
         runAsUser: 1000
       containers:
-        - name: scraper-service-app-web
-          image: scraper-service-app:init
-          imagePullPolicy: Never
-          args:
-            - '--bind'
-            - '0.0.0.0'
-            - 'app:app'
-          ports:
-            - name: gunicorn
-              containerPort: 8000
-          resources:
-            requests:
-              memory: 128Mi
-              cpu: 100m
-            limits:
-              memory: 256Mi
-              cpu: 200m
-          readinessProbe:
-            initialDelaySeconds: 10
-            httpGet:
-              port: gunicorn
-              path: /ready
-          livenessProbe:
-            initialDelaySeconds: 10
-            httpGet:
-              port: gunicorn
-              path: /health
+      - name: scraper-service-app
+        image: scraper-service-app:init
+        imagePullPolicy: IfNotPresent
+        args:
+          - '--bind'
+          - '0.0.0.0'
+          - 'app:app'
+        ports:
+          - name: gunicorn
+            containerPort: 8000
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+        readinessProbe:
+          initialDelaySeconds: 10
+          httpGet:
+            port: gunicorn
+            path: /ready
+        livenessProbe:
+          initialDelaySeconds: 10
+          httpGet:
+            port: gunicorn
+            path: /health

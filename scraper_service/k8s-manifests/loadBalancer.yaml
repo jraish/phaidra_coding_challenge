@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: scraper-service-load-balancer
+  namespace: scraper-service-app
+spec:
+  selector:
+    app: scraper-service-app
+  ports:
+  - protocol: "TCP"
+    port: 8080
+    targetPort: 8080
+  type: LoadBalancer
+  # externalIPs:
+  # - localhost

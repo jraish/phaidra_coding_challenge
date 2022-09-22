@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: scraper-service-app-web
+  name: scraper-service-app
   namespace: scraper-service-app
 spec:
   selector:
     app: scraper-service-app
-    role: web
+  type: NodePort
   ports:
     - name: http
       port: 80
