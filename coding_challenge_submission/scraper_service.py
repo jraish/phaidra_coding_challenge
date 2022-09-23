@@ -14,7 +14,6 @@ app = Flask(__name__)
 metrics = PrometheusMetrics(app, group_by=custom_rule, export_defaults=False)
 
 @app.route('/', methods=['POST'])
-@metrics.do_not_track()
 @metrics.counter(
     'http_get',
     'Requests by url and status code',
