@@ -35,7 +35,7 @@ curl --header "Content-Type: application/json" --request POST --data '{"url": "h
 It should respond with the HTML response from the url you hit.
 To hit the Prometheus server, run
 ```
-curl localhost:9095/metrics
+curl 0.0.0.0:9095/metrics
 ```
 You should see counters of all the endpoints you've hit, and the status codes you've received - like so:
 ```
@@ -43,3 +43,8 @@ You should see counters of all the endpoints you've hit, and the status codes yo
 # TYPE http_get_total counter
 http_get_total{code="200",url="http://www.google.com"} 1.0
 ```
+To test the `scraper_service`, first build the Docker image and run the container, then navigate to the `tests` folder in another terminal and run 
+```
+python test_scraper_service.py <port>
+```
+replacing `<port>` with whichever port `scraper_service` is mapped to. If there's no output, congratulations! All tests passed.
