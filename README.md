@@ -8,7 +8,7 @@ In the `coding_challenge_submission` section, you'll find a finished, working pr
 
 The `coding_challenge_attempt` section is a first draft of how I wanted to address this challenge. It's a little more ambitious, and would probably be the "right" way to implement this service in production. But it proved a little bit too much to implement in the time I had to do this, and I didn't quite get it to work.
 
-The main difference between the two is that the finished submission is a single Python script that creates two servers, a Flask server and a Prometheus server, on two different ports, while the unfinished section was an attempt at putting each part of that into its own Kubernetes pod. Full transparency: the problem with the more ambitious first attempt was that I just didn't have enough experience with Prometheus or Kubernetes to combine the two effectively - I've done some Kubernetes practice before and tinkered with existing deployments, but Prometheus was brand new. I did my best to pick up enough practical Kubernetes in the time allotted to fully implement this, but I just wasn't confident I could get it working correctly. (And reading Kubernetes and Prometheus documentation for a week was beginning to cost me my sanity.) But I still wanted to include the whole working process in this repo so you could see how I approached the problem.
+The main difference between the two is that the finished submission is a single Python script that creates two servers, a Flask server and a Prometheus server, on two different ports, while the unfinished section was an attempt at putting each part of that into its own Kubernetes pod. I did my best to fully implement this, but I just wasn't confident I could get it working correctly. (And reading Kubernetes and Prometheus documentation for a week was beginning to cost me my sanity.) But I still wanted to include the whole working process in this repo so you could see how I approached the problem.
 
 So without further ado, documentation on how to run and test each version.
 
@@ -18,6 +18,7 @@ This service is comprised of a single Python script and a Dockerfile to build an
 ```
 docker build -t scraper_service:latest .
 ```
+from the `coding_challenge_submission` folder.
 (Of course, you can tag it with whatever you'd like - I'm going to assume you've stuck with my tags for this README.)
 Then run it with 
 ```
@@ -48,3 +49,9 @@ To test the `scraper_service`, first build the Docker image and run the containe
 python test_scraper_service.py <port>
 ```
 replacing `<port>` with whichever port `scraper_service` is mapped to. If there's no output, congratulations! All tests passed.
+
+To test the Prometheus service, it's pretty much the same process, with one difference - run 
+```
+python test_prometheus_service.py <port1> <port2>
+```
+replacing `<port1>` with whatever port the Prometheus server is running in and `<port2>` with whatever port the `scraper_service` is running in (since the Prometheus service will rely on calls to that for some of its functionality).
