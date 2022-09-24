@@ -10,7 +10,7 @@ The `coding_challenge_attempt` section is a first draft of how I wanted to addre
 
 The main difference between the two is that the finished submission is a single Python script that creates two servers, a Flask server and a Prometheus server, on two different ports, while the unfinished section was an attempt at putting each part of that into its own Kubernetes pod. I did my best to fully implement this, but I just wasn't confident I could get it working correctly. (And reading Kubernetes and Prometheus documentation for a week was beginning to cost me my sanity.) But I still wanted to include the whole working process in this repo so you could see how I approached the problem.
 
-So without further ado, documentation on how to run and test each version.
+So without further ado, documentation on how to run and test the submission.
 
 ## coding_challenge_submission, or, "Once more with feeling"
 
@@ -55,3 +55,9 @@ To test the Prometheus service, it's pretty much the same process, with one diff
 python test_prometheus_service.py <port1> <port2>
 ```
 replacing `<port1>` with whatever port the Prometheus server is running in and `<port2>` with whatever port the `scraper_service` is running in (since the Prometheus service will rely on calls to that for some of its functionality).
+
+Finally, there's a bash script to repeatedly hit the service to test its output. Run it with
+```
+sh hit_scraper_service.sh <scraper service port> <prometheus service port> <url to hit>
+```
+It will run every 30 seconds, hit the url, and provide output from Prometheus.

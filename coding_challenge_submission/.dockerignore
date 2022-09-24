@@ -1,1 +1,3 @@
 tests/
+docker-compose.yml
+hit_scraper_service.sh
